@@ -1,6 +1,6 @@
 {
   "name": "eventemitter-browserify",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Minimal implementation of Node.js v6.6.0 EventEmitter specification, for use in browser",
   "main": "index.js",
   "repository": {

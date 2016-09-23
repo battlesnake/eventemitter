@@ -1,13 +1,7 @@
-if (typeof require === 'undefined') {
-	if (typeof module !== 'undefined') {
-		module.exports = EventEmitter;
-	} else if (typeof window !== 'undefined') {
-		window.EventEmitter = EventEmitter;
-	} else {
-		throw new Error('What the hell is this environment?');
-	}
-} else {
+if (typeof window === 'undefined') {
 	module.exports = require('even' + 'ts').EventEmitter;
+} else {
+	module.exports = EventEmitter;
 }
 
 /* Deviation from Node.js spec: only permit String, not Symbol, for event name */
@@ -86,7 +80,7 @@ function EventEmitter() {
 			}
 			return false;
 		}
-		[...list].forEach(handler => handler(event, ...args));
+		[...list].forEach(handler => handler(...args));
 		return true;
 	};
 	const getCount = event => {
