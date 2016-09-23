@@ -1,0 +1,12 @@
+{
+  "name": "eventemitter-browser",
+  "version": "0.0.1",
+  "description": "Minimal implementation of Node.js v6.6.0 EventEmitter specification, for use in browser",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@git.kuckian.co.uk:eventemitter-browser"
+  },
+  "author": "Mark K Cowan",
+  "license": "GPL-2.0"
+}
