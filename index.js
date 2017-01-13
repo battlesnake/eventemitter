@@ -62,11 +62,17 @@ function EventEmitter() {
 		return this;
 	};
 	const blitz = event => {
-		if (typeof event !== 'string') {
-			throw new Error('Event name must be a string');
+		let list;
+		if (event === undefined) {
+			list = [].concat.apply(...listeners.values());
+			listeners.clear();
+		} else {
+			if (typeof event !== 'string') {
+				throw new Error('Event name must be a string');
+			}
+			list = get(event, false);
+			listeners.delete(event);
 		}
-		const list = get(event, false);
-		listeners.delete(event);
 		if (list) {
 			list.forEach(handler => this.emit('removeListener', event, handler));
 		}
