@@ -1,6 +1,6 @@
 {
   "name": "eventemitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minimal implementation of Node.js v6.6.0 EventEmitter specification, for use in browser",
   "main": "index.js",
   "author": "Mark K Cowan",

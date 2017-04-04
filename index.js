@@ -4,14 +4,23 @@ if (typeof window === 'undefined') {
 	module.exports = EventEmitter;
 }
 
-/* Deviation from Node.js spec: only permit String, not Symbol, for event name */
-
 EventEmitter.defaultMaxListeners = 10;
 
 function EventEmitter() {
 	const listeners = new Map();
 	let maxListeners = EventEmitter.defaultMaxListeners;
+	const validate_event = event => {
+		if (typeof event !== 'string' && typeof event !== 'symbol') {
+			throw new Error('Event name must be a string or a symbol');
+		}
+	};
+	const validate_handler = handler => {
+		if (typeof handler !== 'function') {
+			throw new Error('Event handler must be a function');
+		}
+	};
 	const get = (event, needed) => {
+		validate_event(event);
 		if (!listeners.has(event)) {
 			if (needed) {
 				listeners.set(event, []);
@@ -22,12 +31,8 @@ function EventEmitter() {
 		return listeners.get(event);
 	};
 	const set = (event, handler, method) => {
-		if (typeof event !== 'string') {
-			throw new Error('Event name must be a string');
-		}
-		if (typeof handler !== 'function') {
-			throw new Error('Event handler must be a function');
-		}
+		validate_event(event);
+		validate_handler(handler);
 		const list = get(event, true);
 		if (list.length >= maxListeners) {
 			console.warning(`Too many listeners for event ${event}`);
@@ -40,12 +45,8 @@ function EventEmitter() {
 	const append = (event, handler) => set(event, handler, 'push');
 	const prepend = (event, handler) => set(event, handler, 'unshift');
 	const unset = (event, handler) => {
-		if (typeof event !== 'string') {
-			throw new Error('Event name must be a string');
-		}
-		if (typeof handler !== 'function') {
-			throw new Error('Event handler must be a function');
-		}
+		validate_event(event);
+		validate_handler(handler);
 		const list = get(event, false);
 		if (!list) {
 			return this;
@@ -63,13 +64,11 @@ function EventEmitter() {
 	};
 	const blitz = event => {
 		let list;
-		if (event === undefined) {
-			list = [].concat.apply(...listeners.values());
+		if (typeof event === 'undefined') {
+			list = [].concat(...listeners.values());
 			listeners.clear();
 		} else {
-			if (typeof event !== 'string') {
-				throw new Error('Event name must be a string');
-			}
+			validate_event(event);
 			list = get(event, false);
 			listeners.delete(event);
 		}
